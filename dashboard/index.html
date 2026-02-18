@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تراثنا هب | Turathna Hub — Saudi Artisan Marketplace</title>
+    <meta name="description"
+        content="Authentic Saudi handmade products — connect with master artisans across the Kingdom">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --gold: #c9a227;
+            --gold-light: #e8c547;
+            --gold-dark: #a07c10;
+            --bg: #0a0806;
+            --bg2: #120f09;
+            --bg3: #1c1610;
+            --surface: #241d13;
+            --border: #3a2f1e;
+            --text: #f5ede0;
+            --text2: #b8a48a;
+            --text3: #7a6a52;
+            --green: #10b981;
+            --red: #ef4444;
+            --purple: #8b5cf6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Tajawal', 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* ── Nav ── */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(10, 8, 6, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 2rem;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .logo-text {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--gold);
+        }
+
+        .logo-sub {
+            font-size: 0.7rem;
+            color: var(--text3);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text2);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+            cursor: pointer;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--gold);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: #000;
+            padding: 0.5rem 1.25rem;
+            border-radius: 8px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 20px rgba(201, 162, 39, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--gold);
+            border: 1px solid var(--gold);
+            padding: 0.5rem 1.25rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        .btn-outline:hover {
+            background: rgba(201, 162, 39, 0.1);
+        }
+
+        /* ── Hero ── */
+        .hero {
+            padding: 5rem 2rem 4rem;
+            text-align: center;
+            background: radial-gradient(ellipse at 50% 0%, rgba(201, 162, 39, 0.12) 0%, transparent 70%);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(201, 162, 39, 0.1);
+            border: 1px solid rgba(201, 162, 39, 0.3);
+            color: var(--gold);
+            padding: 0.35rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            color: var(--text2);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            line-height: 1.7;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 3rem;
+            justify-content: center;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-num {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--gold);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text3);
+            margin-top: 0.2rem;
+        }
+
+        /* ── Tabs ── */
+        .tabs {
+            display: flex;
+            gap: 0;
+            border-bottom: 1px solid var(--border);
+            padding: 0 2rem;
+            background: var(--bg2);
+            overflow-x: auto;
+        }
+
+        .tab {
+            padding: 1rem 1.5rem;
+            color: var(--text3);
+            cursor: pointer;
+            font-size: 0.9rem;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .tab.active {
+            color: var(--gold);
+            border-bottom-color: var(--gold);
+        }
+
+        .tab:hover {
+            color: var(--text);
+        }
+
+        /* ── Sections ── */
+        .section {
+            display: none;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        /* ── Cards ── */
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .product-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--gold);
+            box-shadow: 0 8px 30px rgba(201, 162, 39, 0.15);
+        }
+
+        .product-img {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, var(--bg3), var(--surface));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+
+        .product-body {
+            padding: 1rem;
+        }
+
+        .product-name {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .product-name-en {
+            font-size: 0.8rem;
+            color: var(--text3);
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-price {
+            font-size: 1.2rem;
+            font-weight: 900;
+            color: var(--gold);
+        }
+
+        .product-city {
+            font-size: 0.75rem;
+            color: var(--text3);
+            margin-top: 0.25rem;
+        }
+
+        .product-badge {
+            display: inline-block;
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--green);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            margin-top: 0.5rem;
+        }
+
+        /* ── Forms ── */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-size: 0.85rem;
+            color: var(--text2);
+            font-weight: 500;
+        }
+
+        input,
+        select,
+        textarea {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 0.65rem 0.9rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-family: 'Tajawal', sans-serif;
+            transition: border-color 0.2s;
+            width: 100%;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        select option {
+            background: var(--bg3);
+        }
+
+        /* ── Pricing ── */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .plan-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .plan-card.featured {
+            border-color: var(--gold);
+            background: linear-gradient(135deg, rgba(201, 162, 39, 0.08), var(--surface));
+        }
+
+        .plan-card.featured::before {
+            content: 'الأكثر شعبية';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gold);
+            color: #000;
+            padding: 0.2rem 1rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .plan-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .plan-price {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--gold);
+        }
+
+        .plan-period {
+            font-size: 0.8rem;
+            color: var(--text3);
+        }
+
+        .plan-commission {
+            font-size: 0.9rem;
+            color: var(--text2);
+            margin: 1rem 0;
+            padding: 0.5rem;
+            background: rgba(201, 162, 39, 0.08);
+            border-radius: 8px;
+        }
+
+        .plan-features {
+            list-style: none;
+            text-align: right;
+            margin: 1rem 0;
+        }
+
+        .plan-features li {
+            padding: 0.35rem 0;
+            font-size: 0.85rem;
+            color: var(--text2);
+        }
+
+        .plan-features li::before {
+            content: '✓ ';
+            color: var(--green);
+        }
+
+        /* ── Status ── */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.3rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-active {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--green);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .status-pending {
+            background: rgba(245, 158, 11, 0.15);
+            color: #f59e0b;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        /* ── Alerts ── */
+        .alert {
+            padding: 1rem 1.25rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            margin: 1rem 0;
+        }
+
+        .alert-success {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: var(--green);
+        }
+
+        .alert-error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: var(--red);
+        }
+
+        /* ── API Key box ── */
+        .api-key-box {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: monospace;
+            font-size: 0.85rem;
+            word-break: break-all;
+            color: var(--gold);
+            margin: 0.5rem 0;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-stats {
+                gap: 1.5rem;
+            }
+
+            nav {
+                padding: 0 1rem;
+            }
+
+            .section {
+                padding: 1.5rem 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div class="logo">
+            <div class="logo-icon">🏺</div>
+            <div>
+                <div class="logo-text">تراثنا هب</div>
+                <div class="logo-sub">Turathna Hub</div>
+            </div>
+        </div>
+        <div class="nav-links">
+            <span class="nav-link active" onclick="showTab('marketplace')">السوق</span>
+            <span class="nav-link" onclick="showTab('artisan')">للحرفيين</span>
+            <span class="nav-link" onclick="showTab('pricing')">الأسعار</span>
+            <span class="nav-link" onclick="showTab('dashboard')">لوحة التحكم</span>
+            <button class="btn-primary" onclick="showTab('register')">انضم كحرفي</button>
+        </div>
+    </nav>
+
+    <!-- ── Hero ── -->
+    <div class="hero" id="hero-section">
+        <div class="hero-badge">🇸🇦 منصة الحرف اليدوية السعودية الأصيلة</div>
+        <h1>اكتشف <span>الحرف اليدوية</span><br>السعودية الأصيلة</h1>
+        <p>تواصل مع أمهر الحرفيين في المملكة — من الفخار والنسيج إلى المجوهرات والجلود. كل قطعة تحكي قصة.</p>
+        <div class="hero-actions">
+            <button class="btn-primary" onclick="showTab('marketplace')">تسوق الآن</button>
+            <button class="btn-outline" onclick="showTab('register')">انضم كحرفي</button>
+        </div>
+        <div class="hero-stats">
+            <div class="stat">
+                <div class="stat-num" id="stat-artisans">0</div>
+                <div class="stat-label">حرفي مسجل</div>
+            </div>
+            <div class="stat">
+                <div class="stat-num" id="stat-products">0</div>
+                <div class="stat-label">منتج أصيل</div>
+            </div>
+            <div class="stat">
+                <div class="stat-num" id="stat-orders">0</div>
+                <div class="stat-label">طلب مكتمل</div>
+            </div>
+            <div class="stat">
+                <div class="stat-num" id="stat-cities">12</div>
+                <div class="stat-label">مدينة سعودية</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Tabs ── -->
+    <div class="tabs">
+        <div class="tab active" id="tab-marketplace" onclick="showTab('marketplace')">🏪 السوق</div>
+        <div class="tab" id="tab-artisan" onclick="showTab('artisan')">🎨 للحرفيين</div>
+        <div class="tab" id="tab-register" onclick="showTab('register')">📝 تسجيل حرفي</div>
+        <div class="tab" id="tab-pricing" onclick="showTab('pricing')">💎 الباقات</div>
+        <div class="tab" id="tab-dashboard" onclick="showTab('dashboard')">📊 لوحة التحكم</div>
+    </div>
+
+    <!-- ── Marketplace ── -->
+    <div class="section active" id="section-marketplace">
+        <div style="display:flex;gap:1rem;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;">
+            <h2 style="font-size:1.4rem;font-weight:800;">المنتجات المتاحة</h2>
+            <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-right:auto;">
+                <select id="filter-category" onchange="filterProducts()" style="width:auto;">
+                    <option value="">جميع الفئات</option>
+                    <option value="pottery">فخار</option>
+                    <option value="weaving">نسيج</option>
+                    <option value="jewelry">مجوهرات</option>
+                    <option value="leather">جلود</option>
+                    <option value="wood">خشب</option>
+                    <option value="calligraphy">خط عربي</option>
+                </select>
+                <select id="filter-city" onchange="filterProducts()" style="width:auto;">
+                    <option value="">جميع المدن</option>
+                    <option value="riyadh">الرياض</option>
+                    <option value="jeddah">جدة</option>
+                    <option value="dammam">الدمام</option>
+                    <option value="abha">أبها</option>
+                </select>
+            </div>
+        </div>
+        <div class="card-grid" id="products-grid">
+            <div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--text3);">
+                <div style="font-size:3rem;margin-bottom:1rem;">🏺</div>
+                <p>جاري تحميل المنتجات...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Artisan Info ── -->
+    <div class="section" id="section-artisan">
+        <div style="max-width:800px;margin:0 auto;">
+            <h2 style="font-size:2rem;font-weight:900;margin-bottom:0.5rem;">انضم إلى تراثنا هب</h2>
+            <p style="color:var(--text2);margin-bottom:2rem;">بيع منتجاتك الحرفية لعملاء في جميع أنحاء المملكة والعالم
+            </p>
+            <div class="card-grid" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr));margin-bottom:2rem;">
+                <div class="card" style="text-align:center;">
+                    <div style="font-size:2.5rem;margin-bottom:0.75rem;">🚀</div>
+                    <h3 style="color:var(--gold);margin-bottom:0.5rem;">ابدأ مجاناً</h3>
+                    <p style="color:var(--text2);font-size:0.85rem;">سجّل حسابك وابدأ البيع بدون رسوم شهرية</p>
+                </div>
+                <div class="card" style="text-align:center;">
+                    <div style="font-size:2.5rem;margin-bottom:0.75rem;">📦</div>
+                    <h3 style="color:var(--gold);margin-bottom:0.5rem;">شحن SMSA</h3>
+                    <p style="color:var(--text2);font-size:0.85rem;">توصيل سريع لجميع مناطق المملكة</p>
+                </div>
+                <div class="card" style="text-align:center;">
+                    <div style="font-size:2.5rem;margin-bottom:0.75rem;">💳</div>
+                    <h3 style="color:var(--gold);margin-bottom:0.5rem;">دفع آمن</h3>
+                    <p style="color:var(--text2);font-size:0.85rem;">تحويل أرباحك مباشرة لحسابك البنكي</p>
+                </div>
+                <div class="card" style="text-align:center;">
+                    <div style="font-size:2.5rem;margin-bottom:0.75rem;">📊</div>
+                    <h3 style="color:var(--gold);margin-bottom:0.5rem;">تحليلات مفصلة</h3>
+                    <p style="color:var(--text2);font-size:0.85rem;">تتبع مبيعاتك وأداء منتجاتك</p>
+                </div>
+            </div>
+            <div style="text-align:center;">
+                <button class="btn-primary" style="font-size:1.1rem;padding:0.75rem 2rem;"
+                    onclick="showTab('register')">سجّل الآن مجاناً →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Register ── -->
+    <div class="section" id="section-register">
+        <div style="max-width:700px;margin:0 auto;">
+            <h2 style="font-size:1.8rem;font-weight:900;margin-bottom:0.5rem;">تسجيل حرفي جديد</h2>
+            <p style="color:var(--text2);margin-bottom:2rem;">انضم لمجتمع الحرفيين السعوديين — مجاناً</p>
+            <div id="register-alert"></div>
+            <div class="card">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>الاسم الكامل *</label>
+                        <input type="text" id="reg-name" placeholder="محمد العمري">
+                    </div>
+                    <div class="form-group">
+                        <label>البريد الإلكتروني *</label>
+                        <input type="email" id="reg-email" placeholder="artisan@example.com" dir="ltr">
+                    </div>
+                    <div class="form-group">
+                        <label>رقم الجوال *</label>
+                        <input type="tel" id="reg-phone" placeholder="+966 5X XXX XXXX" dir="ltr">
+                    </div>
+                    <div class="form-group">
+                        <label>المدينة *</label>
+                        <select id="reg-city">
+                            <option value="">اختر مدينتك</option>
+                            <option value="riyadh">الرياض</option>
+                            <option value="jeddah">جدة</option>
+                            <option value="dammam">الدمام</option>
+                            <option value="mecca">مكة المكرمة</option>
+                            <option value="medina">المدينة المنورة</option>
+                            <option value="khobar">الخبر</option>
+                            <option value="abha">أبها</option>
+                            <option value="tabuk">تبوك</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>نوع الحرفة *</label>
+                        <select id="reg-craft">
+                            <option value="">اختر حرفتك</option>
+                            <option value="pottery">فخار وخزف</option>
+                            <option value="weaving">نسيج وحياكة</option>
+                            <option value="jewelry">مجوهرات وحلي</option>
+                            <option value="leather">جلود ومنتجاتها</option>
+                            <option value="wood">نجارة وخشب</option>
+                            <option value="calligraphy">خط عربي</option>
+                            <option value="embroidery">تطريز</option>
+                            <option value="perfume">عطور وبخور</option>
+                            <option value="dates">تمور ومنتجات</option>
+                            <option value="other">أخرى</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>الباقة</label>
+                        <select id="reg-plan">
+                            <option value="basic">أساسي — مجاني (عمولة 15%)</option>
+                            <option value="standard">قياسي — 49 ريال/شهر (عمولة 10%)</option>
+                            <option value="premium">مميز — 149 ريال/شهر (عمولة 5%)</option>
+                        </select>
+                    </div>
+                    <div class="form-group full">
+                        <label>نبذة عنك وعن حرفتك *</label>
+                        <textarea id="reg-bio" placeholder="أخبرنا عن تجربتك في الحرفة، وما يميز منتجاتك..."></textarea>
+                    </div>
+                    <div class="form-group full">
+                        <label>رقم الآيبان البنكي (اختياري)</label>
+                        <input type="text" id="reg-iban" placeholder="SA00 0000 0000 0000 0000 0000" dir="ltr">
+                    </div>
+                </div>
+                <div style="margin-top:1.5rem;text-align:center;">
+                    <button class="btn-primary" style="width:100%;padding:0.85rem;font-size:1rem;"
+                        onclick="registerArtisan()">
+                        إنشاء حساب مجاني →
+                    </button>
+                </div>
+            </div>
+            <div id="api-key-section" style="display:none;margin-top:1.5rem;">
+                <div class="card" style="border-color:var(--green);">
+                    <h3 style="color:var(--green);margin-bottom:0.75rem;">✅ تم التسجيل بنجاح!</h3>
+                    <p style="color:var(--text2);font-size:0.9rem;margin-bottom:0.75rem;">احفظ مفتاح API الخاص بك —
+                        ستحتاجه لإدارة منتجاتك:</p>
+                    <div class="api-key-box" id="api-key-display"></div>
+                    <p style="color:var(--text3);font-size:0.8rem;margin-top:0.5rem;">⚠️ لن يُعرض هذا المفتاح مرة أخرى.
+                        احفظه الآن.</p>
+                    <p style="color:var(--text2);font-size:0.85rem;margin-top:0.75rem;">سيتم مراجعة حسابك خلال 1-2 يوم
+                        عمل. ستصلك رسالة بريد إلكتروني عند التفعيل.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Pricing ── -->
+    <div class="section" id="section-pricing">
+        <div style="text-align:center;margin-bottom:2.5rem;">
+            <h2 style="font-size:2rem;font-weight:900;margin-bottom:0.5rem;">اختر باقتك</h2>
+            <p style="color:var(--text2);">ابدأ مجاناً وارتقِ مع نمو أعمالك</p>
+        </div>
+        <div class="pricing-grid">
+            <div class="plan-card">
+                <div class="plan-name">أساسي</div>
+                <div class="plan-price">0</div>
+                <div class="plan-period">ريال / شهر</div>
+                <div class="plan-commission">عمولة 15% على كل بيع</div>
+                <ul class="plan-features">
+                    <li>10 منتجات كحد أقصى</li>
+                    <li>شحن SMSA</li>
+                    <li>لوحة تحكم أساسية</li>
+                    <li>دعم عبر البريد</li>
+                </ul>
+                <button class="btn-outline" style="width:100%;" onclick="showTab('register')">ابدأ مجاناً</button>
+            </div>
+            <div class="plan-card featured">
+                <div class="plan-name">قياسي</div>
+                <div class="plan-price">49</div>
+                <div class="plan-period">ريال / شهر</div>
+                <div class="plan-commission">عمولة 10% فقط</div>
+                <ul class="plan-features">
+                    <li>100 منتج</li>
+                    <li>أولوية في نتائج البحث</li>
+                    <li>تحليلات مفصلة</li>
+                    <li>دعم سريع</li>
+                    <li>شارة "حرفي موثّق"</li>
+                </ul>
+                <button class="btn-primary" style="width:100%;" onclick="upgradePlan('standard')">اشترك الآن</button>
+            </div>
+            <div class="plan-card">
+                <div class="plan-name">مميز</div>
+                <div class="plan-price">149</div>
+                <div class="plan-period">ريال / شهر</div>
+                <div class="plan-commission">عمولة 5% فقط</div>
+                <ul class="plan-features">
+                    <li>منتجات غير محدودة</li>
+                    <li>صفحة متجر مخصصة</li>
+                    <li>تسويق على السوشيال</li>
+                    <li>مدير حساب مخصص</li>
+                    <li>تقارير أسبوعية</li>
+                </ul>
+                <button class="btn-outline" style="width:100%;" onclick="upgradePlan('premium')">اشترك الآن</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Dashboard ── -->
+    <div class="section" id="section-dashboard">
+        <div style="max-width:900px;margin:0 auto;">
+            <div style="display:flex;gap:1rem;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;">
+                <h2 style="font-size:1.5rem;font-weight:900;">لوحة تحكم الحرفي</h2>
+                <div style="margin-right:auto;display:flex;gap:0.75rem;align-items:center;">
+                    <input type="text" id="dash-api-key" placeholder="أدخل مفتاح API الخاص بك..." style="width:300px;"
+                        dir="ltr">
+                    <button class="btn-primary" onclick="loadDashboard()">تحميل</button>
+                </div>
+            </div>
+            <div id="dashboard-content">
+                <div class="card" style="text-align:center;padding:3rem;color:var(--text3);">
+                    <div style="font-size:3rem;margin-bottom:1rem;">🔑</div>
+                    <p>أدخل مفتاح API الخاص بك لعرض لوحة التحكم</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API = 'http://localhost:8004';
+
+        // ── Tab Navigation ──
+        function showTab(name) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.getElementById('section-' + name).classList.add('active');
+            const tab = document.getElementById('tab-' + name);
+            if (tab) tab.classList.add('active');
+            if (name === 'marketplace') loadProducts();
+        }
+
+        // ── Load Stats ──
+        async function loadStats() {
+            try {
+                const r = await fetch(`${API}/analytics/marketplace`);
+                const d = await r.json();
+                document.getElementById('stat-artisans').textContent = d.total_artisans || 0;
+                document.getElementById('stat-products').textContent = d.total_products || 0;
+                document.getElementById('stat-orders').textContent = d.paid_orders || 0;
+            } catch (e) { }
+        }
+
+        // ── Load Products ──
+        async function loadProducts() {
+            const cat = document.getElementById('filter-category')?.value || '';
+            const city = document.getElementById('filter-city')?.value || '';
+            const grid = document.getElementById('products-grid');
+            grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--text3);"><div style="font-size:2rem;margin-bottom:0.5rem;">⏳</div><p>جاري التحميل...</p></div>';
+            try {
+                let url = `${API}/products?limit=20`;
+                if (cat) url += `&category=${cat}`;
+                if (city) url += `&city=${city}`;
+                const r = await fetch(url);
+                const d = await r.json();
+                if (!d.products || d.products.length === 0) {
+                    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--text3);"><div style="font-size:3rem;margin-bottom:1rem;">🏺</div><p>لا توجد منتجات حالياً. كن أول حرفي!</p></div>';
+                    return;
+                }
+                const emojis = { pottery: '🏺', weaving: '🧶', jewelry: '💍', leather: '👜', wood: '🪵', calligraphy: '✍️', embroidery: '🧵', perfume: '🕌', dates: '🌴', other: '🎨' };
+                grid.innerHTML = d.products.map(p => `
+      <div class="product-card" onclick="viewProduct('${p.product_id}')">
+        <div class="product-img">${emojis[p.category] || '🎨'}</div>
+        <div class="product-body">
+          <div class="product-name">${p.name_ar}</div>
+          <div class="product-name-en">${p.name_en}</div>
+          <div class="product-price">${p.price_sar} ريال</div>
+          <div class="product-city">📍 ${p.artisan_city} · ${p.artisan_name}</div>
+          <div class="product-badge">✓ منتج أصيل</div>
+        </div>
+      </div>
+    `).join('');
+            } catch (e) {
+                grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--text3);"><p>تعذر الاتصال بالخادم. تأكد من تشغيل الـ API.</p></div>';
+            }
+        }
+
+        function filterProducts() { loadProducts(); }
+
+        async function viewProduct(id) {
+            try {
+                const r = await fetch(`${API}/products/${id}`);
+                const p = await r.json();
+                alert(`${p.name_ar}\n${p.name_en}\n\nالسعر: ${p.price_sar} ريال\nالمخزون: ${p.stock}\n\n${p.description_ar}`);
+            } catch (e) { }
+        }
+
+        // ── Register Artisan ──
+        async function registerArtisan() {
+            const data = {
+                name: document.getElementById('reg-name').value,
+                email: document.getElementById('reg-email').value,
+                phone: document.getElementById('reg-phone').value,
+                city: document.getElementById('reg-city').value,
+                craft_type: document.getElementById('reg-craft').value,
+                bio: document.getElementById('reg-bio').value,
+                bank_iban: document.getElementById('reg-iban').value || null,
+                plan: document.getElementById('reg-plan').value,
+            };
+            if (!data.name || !data.email || !data.phone || !data.city || !data.craft_type || !data.bio) {
+                document.getElementById('register-alert').innerHTML = '<div class="alert alert-error">يرجى ملء جميع الحقول المطلوبة *</div>';
+                return;
+            }
+            try {
+                const r = await fetch(`${API}/artisans/register`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+                const d = await r.json();
+                if (!r.ok) {
+                    document.getElementById('register-alert').innerHTML = `<div class="alert alert-error">${d.detail}</div>`;
+                    return;
+                }
+                document.getElementById('register-alert').innerHTML = '';
+                document.getElementById('api-key-display').textContent = d.api_key;
+                document.getElementById('api-key-section').style.display = 'block';
+                document.getElementById('register-alert').innerHTML = `<div class="alert alert-success">مرحباً ${data.name}! ${d.message}</div>`;
+            } catch (e) {
+                document.getElementById('register-alert').innerHTML = '<div class="alert alert-error">تعذر الاتصال بالخادم. تأكد من تشغيل الـ API.</div>';
+            }
+        }
+
+        // ── Load Dashboard ──
+        async function loadDashboard() {
+            const key = document.getElementById('dash-api-key').value.trim();
+            if (!key) return;
+            const content = document.getElementById('dashboard-content');
+            content.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--text3);">⏳ جاري التحميل...</div>';
+            try {
+                const r = await fetch(`${API}/artisans/me`, { headers: { 'x-api-key': key } });
+                if (!r.ok) { content.innerHTML = '<div class="alert alert-error">مفتاح API غير صحيح</div>'; return; }
+                const a = await r.json();
+                const statusClass = a.status === 'active' ? 'status-active' : 'status-pending';
+                const statusText = a.status === 'active' ? '✅ نشط' : '⏳ قيد المراجعة';
+                content.innerHTML = `
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-bottom:1.5rem;">
+        <div class="card" style="text-align:center;">
+          <div style="font-size:1.8rem;font-weight:900;color:var(--gold);">${a.products}</div>
+          <div style="color:var(--text3);font-size:0.85rem;">منتج مسجل</div>
+        </div>
+        <div class="card" style="text-align:center;">
+          <div style="font-size:1.8rem;font-weight:900;color:var(--green);">${a.total_orders}</div>
+          <div style="color:var(--text3);font-size:0.85rem;">إجمالي الطلبات</div>
+        </div>
+        <div class="card" style="text-align:center;">
+          <div style="font-size:1.8rem;font-weight:900;color:var(--purple);">${a.pending_orders}</div>
+          <div style="color:var(--text3);font-size:0.85rem;">طلبات معلقة</div>
+        </div>
+        <div class="card" style="text-align:center;">
+          <div class="status-badge ${statusClass}" style="margin:0 auto;">${statusText}</div>
+          <div style="color:var(--text3);font-size:0.85rem;margin-top:0.5rem;">حالة الحساب</div>
+        </div>
+      </div>
+      <div class="card">
+        <h3 style="margin-bottom:1rem;">معلومات الحساب</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;font-size:0.9rem;">
+          <div><span style="color:var(--text3);">الاسم: </span>${a.name}</div>
+          <div><span style="color:var(--text3);">المدينة: </span>${a.city}</div>
+          <div><span style="color:var(--text3);">الحرفة: </span>${a.craft_type}</div>
+          <div><span style="color:var(--text3);">الباقة: </span>${a.plan_details?.name || a.plan}</div>
+          <div><span style="color:var(--text3);">العمولة: </span>${(a.plan_details?.rate * 100) || 15}%</div>
+          <div><span style="color:var(--text3);">تاريخ الانضمام: </span>${new Date(a.joined_at).toLocaleDateString('ar-SA')}</div>
+        </div>
+      </div>
+    `;
+            } catch (e) {
+                content.innerHTML = '<div class="alert alert-error">تعذر الاتصال بالخادم</div>';
+            }
+        }
+
+        async function upgradePlan(plan) {
+            const email = prompt('أدخل بريدك الإلكتروني المسجل:');
+            if (!email) return;
+            try {
+                const r = await fetch(`${API}/artisans/upgrade`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ plan, artisan_email: email }) });
+                const d = await r.json();
+                if (d.checkout_url) window.location.href = d.checkout_url;
+                else alert(d.detail || 'تعذر إنشاء جلسة الدفع');
+            } catch (e) { alert('تعذر الاتصال بالخادم'); }
+        }
+
+        // ── Init ──
+        loadStats();
+        loadProducts();
+    </script>
+</body>
+
+</html>
