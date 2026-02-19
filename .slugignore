@@ -1,0 +1,16 @@
+src/
+app/
+components/
+lib/
+public/
+node_modules/
+.next/
+.git/
+package.json
+package-lock.json
+tsconfig.json
+next.config.ts
+tailwind.config.ts
+postcss.config.mjs
+eslint.config.mjs
+README.md
