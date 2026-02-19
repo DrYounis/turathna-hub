@@ -47,7 +47,15 @@ app = FastAPI(
     description="Saudi artisan marketplace — authentic handmade products",
     version="1.0.0",
 )
-app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
+# CORS: allow_credentials must be False when allow_origins=["*"] (CORS spec requirement)
+# Set ALLOWED_ORIGINS env var to restrict to specific domains in production.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[o.strip() for o in os.getenv("ALLOWED_ORIGINS", "*").split(",") if o.strip()],
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # ── Models ────────────────────────────────────────────────────────────────────
 class ArtisanOnboard(BaseModel):
