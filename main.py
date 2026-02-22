@@ -16,8 +16,9 @@ from typing import Optional, Dict, List
 from fastapi import FastAPI, HTTPException, Depends, Header, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, FileResponse
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field
 import uvicorn
+from fastapi import Request
 
 # ── Stripe ────────────────────────────────────────────────────────────────────
 stripe.api_key = os.getenv("STRIPE_SECRET_KEY", "")
@@ -47,52 +48,91 @@ app = FastAPI(
     description="Saudi artisan marketplace — authentic handmade products",
     version="1.0.0",
 )
-# CORS: allow_credentials must be False when allow_origins=["*"] (CORS spec requirement)
-# Set ALLOWED_ORIGINS env var to restrict to specific domains in production.
+# CORS: explicitly prevent wildcard origins in production
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[o.strip() for o in os.getenv("ALLOWED_ORIGINS", "*").split(",") if o.strip()],
+    allow_origins=[o.strip() for o in os.getenv("ALLOWED_ORIGINS", "http://localhost:3000,http://127.0.0.1:3000").split(",") if o.strip()],
     allow_credentials=False,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["*"],
 )
 
+# SECURITY HEADERS
+@app.middleware("http")
+async def add_security_headers(request: Request, call_next):
+    response = await call_next(request)
+    response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["X-XSS-Protection"] = "1; mode=block"
+    # Note: Allowing images from everywhere for product listings, but restricting scripts/styles
+    response.headers["Content-Security-Policy"] = "default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data: https:;"
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    return response
+
+# RATE LIMITER
+class TokenBucket:
+    def __init__(self, rate=5, capacity=20):
+        self.rate = rate
+        self.capacity = capacity
+        self.tokens = capacity
+        self.last_update = time.time()
+
+    def consume(self, tokens=1):
+        now = time.time()
+        elapsed = now - self.last_update
+        self.tokens = min(self.capacity, self.tokens + elapsed * self.rate)
+        self.last_update = now
+        if self.tokens >= tokens:
+            self.tokens -= tokens
+            return True
+        return False
+
+_rate_limiters: Dict[str, TokenBucket] = {}
+
+def check_rate_limit(request: Request):
+    ip = request.client.host if request.client else "unknown"
+    if ip not in _rate_limiters:
+        _rate_limiters[ip] = TokenBucket(rate=2, capacity=10) # 2 req/sec, burst of 10
+    if not _rate_limiters[ip].consume():
+        raise HTTPException(status_code=429, detail="Too many requests. Please slow down and try again later.")
+
 # ── Models ────────────────────────────────────────────────────────────────────
 class ArtisanOnboard(BaseModel):
-    name: str
-    email: str
-    phone: str
-    city: str
-    craft_type: str           # pottery, weaving, jewelry, wood, leather, etc.
-    bio: str
-    bank_iban: Optional[str] = None
-    plan: Optional[str] = "basic"
+    name: str = Field(..., max_length=100, min_length=2)
+    email: EmailStr
+    phone: str = Field(..., max_length=20, pattern=r"^\+?\d{8,15}$")
+    city: str = Field(..., max_length=100)
+    craft_type: str = Field(..., max_length=50) # pottery, weaving, jewelry, wood, leather, etc.
+    bio: str = Field(..., max_length=1000)
+    bank_iban: Optional[str] = Field(None, max_length=34, pattern=r"^[A-Z]{2}[0-9]{2}[a-zA-Z0-9]{1,30}$")
+    plan: Optional[str] = Field("basic", max_length=20)
 
 class ProductCreate(BaseModel):
-    name_ar: str              # Arabic name
-    name_en: str              # English name
-    description_ar: str
-    description_en: str
-    price_sar: float          # Price in Saudi Riyals
-    category: str
-    stock: int
-    images: Optional[List[str]] = []
-    weight_kg: Optional[float] = 0.5
-    dimensions: Optional[str] = ""
+    name_ar: str = Field(..., max_length=200, min_length=2)
+    name_en: str = Field(..., max_length=200, min_length=2)
+    description_ar: str = Field(..., max_length=2000, min_length=10)
+    description_en: str = Field(..., max_length=2000, min_length=10)
+    price_sar: float = Field(..., ge=1.0, le=100000.0) # Price in Saudi Riyals
+    category: str = Field(..., max_length=100, min_length=2)
+    stock: int = Field(..., ge=0, le=10000)
+    images: Optional[List[str]] = Field([], max_length=10)
+    weight_kg: Optional[float] = Field(0.5, ge=0.01, le=100.0)
+    dimensions: Optional[str] = Field("", max_length=100)
 
 class OrderCreate(BaseModel):
-    product_ids: List[str]
-    quantities: List[int]
-    buyer_name: str
-    buyer_email: str
-    buyer_phone: str
-    delivery_address: str
-    city: str
-    postal_code: str
+    product_ids: List[str] = Field(..., max_length=50, min_length=1)
+    quantities: List[int] = Field(..., max_length=50, min_length=1)
+    buyer_name: str = Field(..., max_length=100, min_length=2)
+    buyer_email: EmailStr
+    buyer_phone: str = Field(..., max_length=20, pattern=r"^\+?\d{8,15}$")
+    delivery_address: str = Field(..., max_length=500, min_length=5)
+    city: str = Field(..., max_length=100, min_length=2)
+    postal_code: str = Field(..., max_length=20, min_length=2)
 
 class CheckoutRequest(BaseModel):
-    plan: str
-    artisan_email: str
+    plan: str = Field(..., max_length=20)
+    artisan_email: EmailStr
 
 # ── Auth ──────────────────────────────────────────────────────────────────────
 def get_artisan(x_api_key: str = Header(None)):
@@ -138,7 +178,7 @@ async def health():
     }
 
 # ── Artisan Onboarding ────────────────────────────────────────────────────────
-@app.post("/artisans/register")
+@app.post("/artisans/register", dependencies=[Depends(check_rate_limit)])
 async def register_artisan(data: ArtisanOnboard):
     """Onboard a new artisan — generates API key"""
     # Check if already registered
@@ -261,7 +301,7 @@ async def get_product(product_id: str):
     return {**product, "shipping_estimate": shipping}
 
 # ── Orders ────────────────────────────────────────────────────────────────────
-@app.post("/orders")
+@app.post("/orders", dependencies=[Depends(check_rate_limit)])
 async def create_order(data: OrderCreate):
     """Create an order and initiate Stripe checkout"""
     if len(data.product_ids) != len(data.quantities):
@@ -313,24 +353,22 @@ async def create_order(data: OrderCreate):
     orders_db[order_id] = order
 
     # Create Stripe checkout
-    if stripe.api_key:
-        try:
-            session = stripe.checkout.Session.create(
-                payment_method_types=["card"],
-                mode="payment",
-                customer_email=data.buyer_email,
-                line_items=line_items,
-                success_url=os.getenv("BASE_URL", "http://localhost:8004") + f"/order-success?order_id={order_id}",
-                cancel_url=os.getenv("BASE_URL", "http://localhost:8004") + "/",
-                metadata={"order_id": order_id},
-            )
-            order["stripe_session_id"] = session.id
-            return {"order_id": order_id, "checkout_url": session.url, "total_sar": total_sar}
-        except stripe.error.StripeError as e:
-            raise HTTPException(status_code=400, detail=str(e))
-
-    # Demo mode (no Stripe configured)
-    return {"order_id": order_id, "message": "Order created (demo mode — Stripe not configured)", "total_sar": total_sar}
+    try:
+        session = stripe.checkout.Session.create(
+            payment_method_types=["card"],
+            mode="payment",
+            customer_email=data.buyer_email,
+            line_items=line_items,
+            success_url=os.getenv("BASE_URL", "http://localhost:8004") + f"/order-success?order_id={order_id}",
+            cancel_url=os.getenv("BASE_URL", "http://localhost:8004") + "/",
+            metadata={"order_id": order_id},
+        )
+        order["stripe_session_id"] = session.id
+        return {"order_id": order_id, "checkout_url": session.url, "total_sar": total_sar}
+    except stripe.error.StripeError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except stripe.error.AuthenticationError:
+        raise HTTPException(status_code=500, detail="Stripe configuration is missing. Payments cannot be processed securely at this time.")
 
 @app.get("/orders/{order_id}")
 async def get_order(order_id: str):
